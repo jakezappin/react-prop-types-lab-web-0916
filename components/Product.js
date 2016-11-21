@@ -1,44 +1,35 @@
-const React = require('react');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 class Product extends React.Component {
   render() {
     return (
       <div className="product">
-        <p>Name: {this.props.name}</p>
-        {this.props.producer ? <small>{this.props.producer}</small> : null}
-        <p>{this.props.hasWatermark ? 'Watermarked' : 'Not watermarked'}</p>
-        <p>Weight: {this.props.weight}</p>
+        <h1>{this.props.name}</h1>
+        <h2>{this.props.producer}</h2>
+        <p>{this.props.color}</p>
+        <p>{this.props.weight}</p>
+        <p>{this.props.hasWatermark ? 'true' : 'false'}</p>
       </div>
-    );
+    )
   }
 }
+
+Product.defaultProps = {
+  hasWatermark: false,
+};
 
 Product.propTypes = {
   name: React.PropTypes.string.isRequired,
   producer: React.PropTypes.string,
   hasWatermark: React.PropTypes.bool,
   color: React.PropTypes.oneOf(['white', 'eggshell-white', 'salmon']).isRequired,
-  weight: (props, propName) => {
-    const weight = props[propName];
-
-    if (weight === undefined) {
-      return new Error('The `weight` prop is required.');
+  weight: (props, name) => {
+    const weight = props[name]
+    if (!(weight < 300 && weight > 80)) {
+      return new console.error('no')
     }
-
-    if (isNaN(weight)) {
-      return new Error('The `weight` prop is not a number.');
-    }
-
-    const isValidWeight = weight > 80 && weight < 300;
-
-    if (!isValidWeight) {
-      return new Error('The `weight` prop should range between 80 and 300.');
-    }
-  },
+  }
 };
 
-Product.defaultProps = {
-  hasWatermark: false,
-};
-
-module.exports = Product;
+module.exports = Product
